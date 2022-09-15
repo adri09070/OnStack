@@ -1,0 +1,14 @@
+{
+	"commentStamp" : "MarcusDenker 9/12/2022 14:48",
+	"super" : "Object",
+	"category" : "ReflectivityOnStack",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"tag",
+		"semaphore"
+	],
+	"name" : "ReflectivityExampleOnStack",
+	"type" : "normal"
+}

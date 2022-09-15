@@ -1,0 +1,3 @@
+waiting
+continue
+	semaphore signal
