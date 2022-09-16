@@ -1,0 +1,3 @@
+*ReflectivityOnStack
+allProcesses
+	^ Process allSubInstances

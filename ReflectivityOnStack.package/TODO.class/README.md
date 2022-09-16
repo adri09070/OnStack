@@ -22,11 +22,31 @@ orginal.
 	-> and the operand stack... 
 			can this lead to problems? e.g. link is executing when receiver is already pushed on the stack. e.g. debugger
 
+This method does a lot of what we need to do:
+
+```
+simulateValueWithArguments: anArray caller: aContext
+	"Simulate the valueWithArguments: primitive. Fail if anArray is not an array of the right arity."
+	| newContext |
+	newContext := (Context newForMethod: self compiledBlock)
+						setSender: aContext
+						receiver: self receiver
+						method: self compiledBlock
+						closure: self
+						startpc: self compiledBlock initialPC.
+	((newContext objectClass: anArray) ~~ Array
+	 or: [numArgs ~= anArray size]) ifTrue:
+		[^Context primitiveFailTokenFor: nil].
+	newContext stackp: self compiledBlock numTemps.
+	1 to: numArgs do:
+		[:i| newContext at: i put: (anArray at: i)].
+	1 to: self basicSize do:
+		[:i| newContext at: i + numArgs put: (self at: i)].
+	^newContext
+	
+```
 -> Try to replace a method where we have to change the PC, too.
 	- How to know the size of the BC that the metalink creates?
-
--> How do we query when installing a link if that method is on the stack?
-
 
 
 Notes:
