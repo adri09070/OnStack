@@ -1,5 +1,8 @@
 Questions:
 
+- #findContextsForMethod: returns the sender context, but that is nil for the first context of the Process
+	-> we have to return maybe a touple: both sender and found context. 
+
 - Simple replace of method works, but we have to signal the semaphore twice. Why?
 
 
@@ -10,7 +13,7 @@ Questions:
 
 	-> do we need to replace the compiledBlock of all Closures that are in the system somewhere?
 	-> Update the method (or outer block). The compiledBlock is in the literals
-
+	-> This could simplify the problem, as if we install a link in anothher closure, we do not have to change that CompiledBlock, nor the method.
 
 Next Step
 =========
