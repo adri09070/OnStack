@@ -14,8 +14,10 @@ testReplaceYourselfWithNewContextForMethodIfContextIsNotTopContext
 	senderContext := context sender.
 	method := context method.
 
-	context replaceYourselfWithNewContextForMethod:
-		ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore.
+	context
+		replaceYourselfWithNewContextForMethod:
+		ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore
+		withCalledContext: calleeContext.
 
 	self
 		assert: calleeContext sender method
@@ -23,4 +25,7 @@ testReplaceYourselfWithNewContextForMethodIfContextIsNotTopContext
 		ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore.
 	self deny: calleeContext sender == context.
 
-	instance continue
+	instance continue.
+	0.1 seconds wait.
+
+	self assert: process isTerminated

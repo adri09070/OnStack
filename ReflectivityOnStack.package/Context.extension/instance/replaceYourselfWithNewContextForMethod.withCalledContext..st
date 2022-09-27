@@ -1,5 +1,5 @@
 *ReflectivityOnStack
-replaceYourselfWithNewContextForMethod: aCompiledMethod
+replaceYourselfWithNewContextForMethod: aCompiledMethod withCalledContext: calledContext
 
 	"we want this method to
 		
@@ -20,13 +20,13 @@ replaceYourselfWithNewContextForMethod: aCompiledMethod
 		              sender: self sender
 		              receiver: self receiver
 		              method: aCompiledMethod
-		              arguments: aCompiledMethod arguments.
+		              arguments: self arguments.
 
 	newContext stackp: numTemps.
-	1 to: numArgs do: [ :i | newContext at: i put: (self at: i) ].
-	1 to: self basicSize do: [ :i | 
-	newContext at: i + numArgs put: (self at: i) ].
-
+	numArgs + 1 to: stackp do: [ :i | newContext at: i put: (self at: i) ].
 	newContext pc: self pc.
+
+	[ calledContext sender == self ] assert.
+	calledContext setSender: newContext.
 
 	^ newContext
