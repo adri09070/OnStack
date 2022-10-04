@@ -2,5 +2,5 @@ examples
 exampleMethodWaitingOnSemaphore
 
 	2 + 3.
-	self wait.
+	self wait2.
 	7 + 5.

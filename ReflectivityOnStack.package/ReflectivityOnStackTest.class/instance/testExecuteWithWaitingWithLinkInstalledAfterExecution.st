@@ -5,7 +5,7 @@ testExecuteWithWaitingWithLinkInstalledAfterExecution
 	
 	
 	
-	process := [ instance exampleMethodWaitingOnSemaphore ] fork.
+	process := [ instance exampleMethodWaitingOnSemaphore  ] fork.
 	0.1 seconds wait.
 	"If we install a link after we execute, we expect it to not matter for this test, as the new code will not be executed"
 	messageNode := (ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore) ast sendNodes third.
@@ -19,7 +19,7 @@ testExecuteWithWaitingWithLinkInstalledAfterExecution
 
 	"here check that the method is on the stack"	
 	
-	self assert: process suspendedContext sender method selector equals: #exampleMethodWaitingOnSemaphore.
+	self assert: process suspendedContext sender sender method selector equals: #exampleMethodWaitingOnSemaphore.
 	"process should be running"
 	self deny: process isTerminated.
 	instance continue.
