@@ -19,7 +19,7 @@ testExecuteWithWaitingWithLinkInstalledAfterExecution
 
 	"here check that the method is on the stack"	
 	
-	self assert: process suspendedContext sender sender method selector equals: #exampleMethodWaitingOnSemaphore.
+	self assert: process suspendedContext sender method selector equals: #exampleMethodWaitingOnSemaphore.
 	"process should be running"
 	self deny: process isTerminated.
 	instance continue.

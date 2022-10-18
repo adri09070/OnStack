@@ -38,15 +38,15 @@ testExecuteWithWaitingWithLinkInstalledAfterExecutionChangeContextManually
 		compileAndInstallCompiledMethod.
 
 
-	process suspendedContext sender sender
+	process suspendedContext sender
 		replaceYourselfWithNewContextForMethod:
 		ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore
-		withCalledContext: process suspendedContext sender.
+		withCalledContext: process suspendedContext.
 
 	"here check that the method is on the stack"
 
 	self
-		assert: process suspendedContext sender sender method selector
+		assert: process suspendedContext sender method selector
 		equals: #exampleMethodWaitingOnSemaphore.
 	"process should be running"
 	self deny: process isTerminated.

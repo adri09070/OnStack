@@ -7,7 +7,7 @@ testExecuteWithWaiting
 
 	"here check that the method is on the stack"	
 	0.1 seconds wait.
-	self assert: process suspendedContext sender sender method equals: ReflectivityExampleOnStack>>#exampleMethodWaitingOnSemaphore.
+	self assert: process suspendedContext sender method equals: ReflectivityExampleOnStack>>#exampleMethodWaitingOnSemaphore.
 	
 	"process should be running"
 	self deny: process isTerminated.
