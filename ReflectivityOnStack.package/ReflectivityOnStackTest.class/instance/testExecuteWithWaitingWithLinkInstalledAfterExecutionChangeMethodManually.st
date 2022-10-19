@@ -5,7 +5,7 @@ testExecuteWithWaitingWithLinkInstalledAfterExecutionChangeMethodManually
 	
 	
 	
-	process := [ instance exampleMethodWaitingOnSemaphore ] fork.
+	process := [ instance exampleMethodWaitingOnSemaphore  ] fork.
 	0.1 seconds wait.
 	"If we install a link after we execute, we expect it to not matter for this test, as the new code will not be executed"
 	messageNode := (ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore) ast sendNodes third.
