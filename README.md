@@ -42,3 +42,5 @@ Then we wait 0.1s such that the process calling our method waits on the semaphor
 
 Here we will list the cases that should be tested and for each if this test has been written and if it is green or not.
 
+1. Test that the **method is on the context stack after starting it** and that the **process terminates after resuming the semaphore: DONE**
+2. 
