@@ -3,7 +3,7 @@
 This repository contains an experimenal feature that would allow to dynamically replace a method in a context in a context stack, while we debug a program, to replace it by another method, without needing to restart the programm completely for the method change to apply.
 For example, this would allow to replace a method called once or several times in the context stack by an instrumented version of this method (e.g: to add breakpoints for example), without needing to restartall the involved contexts.
 
-## How does it work
+## How does it work
 
 The project defines extension methods on `Context`, `Process`  and `ProcessorScheduler` to:
 - search for all contexts that call the method we need to replace on the stack
@@ -31,7 +31,7 @@ Then the sender of the called context of the old context is now set to the new c
 
 **When replacing a method by another one, even if it is a reflective version of the old one, the pc needs to be changed because the start pc of the compiled version and of the reflective version are NOT the same**
 
-##### The New Method Content Is Different
+##### The New Method Content Is Different
 
 1. **In the case of a reflective method, it can add and/or remove some code at several locations in the code. Even the instruction of the old method the execution stopped to could have been deleted. How to know the pc in the reflective method corresponding to that instruction, if it may or may not exist anymore in the reflective method?**
 2. **In the case of a completely different method than the old method, does it make sense? If it makes sense, what should the execution do (which pc should be set for the new context of the new method?)**
