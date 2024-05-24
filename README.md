@@ -25,9 +25,9 @@ When a context to replace itself on the stack by a context with another compiled
 
 Then the sender of the called context of the old context is now set to the new context.
 
-#### Problems
+#### Problems
 
-##### Different Start PCs for Compiled Methods and Their Reflective Versions
+##### Different Start PCs for Compiled Methods and Their Reflective Versions
 
 **When replacing a method by another one, even if it is a reflective version of the old one, the pc needs to be changed because the start pc of the compiled version and of the reflective version are NOT the same**
 
