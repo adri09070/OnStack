@@ -1,6 +1,5 @@
 *ReflectivityOnStack
 replaceYourselfWithNewContextForMethod: aCompiledMethod withCalledContext: calledContext
-
 	"we want this method to
 		
 	1) create a new context for the method (e.g. for that number of temps)
@@ -24,7 +23,7 @@ replaceYourselfWithNewContextForMethod: aCompiledMethod withCalledContext: calle
 
 	newContext stackp: numTemps.
 	numArgs + 1 to: stackp do: [ :i | newContext at: i put: (self at: i) ].
-	newContext pc: self pc.
+	newContext pc: (self computePCForNewMethod: aCompiledMethod).
 
 	[ calledContext sender == self ] assert.
 	calledContext setSender: newContext.

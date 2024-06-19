@@ -1,1 +1,1 @@
-SystemOrganization addCategory: #ReflectivityOnStack!
+self packageOrganizer ensurePackage: #ReflectivityOnStack withTags: #()!
