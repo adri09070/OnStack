@@ -1,0 +1,4 @@
+initialization
+defaultIconName
+
+	^ #breakOnStack

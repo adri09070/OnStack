@@ -1,0 +1,11 @@
+{
+	"commentStamp" : "",
+	"super" : "StDebuggerCommand",
+	"category" : "ReflectivityOnStack",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [ ],
+	"name" : "StBreakOnStackCommand",
+	"type" : "normal"
+}
