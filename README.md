@@ -47,6 +47,32 @@ These problems appear in both implementations (when creating a new context and w
 1. **In the case of a reflective method, it can add and/or remove some code at several locations in the code. Even the instruction of the old method the execution stopped to could have been deleted. How to know the pc in the reflective method corresponding to that instruction, if it may or may not exist anymore in the reflective method?**
 2. **In the case of a completely different method than the old method, does it make sense? If it makes sense, what should the execution do (which pc should be set for the new context of the new method?)**
 
+###### Partial solution for reflective methods
+
+The hypothetical pc for the new context if we suppose that the new method does not add bytecode before the instruction the program stopped to, is: `start_pc_of_new_method + difference_between_old_context_pc_and_old_start_pc`.
+There can be a greater PC shift if the new method added some bytecodes before the instruction the program stopped to, or a lower PC shift if the new method removed some bytecodes before the instruction stopped to.
+
+If we suppose that the new method only added bytecodes and did not remove any from the old method (`before`  and `after` metalinks do that):
+We could try to detect in the new method all bytecodes prior to the bytecode the program stopped to in the old method, index by index.
+If we find that the bytecode at the current index for the new method is not identical to the bytecode at the current index for the old method, then it means that the new method has added some bytecodes, and we can add to the shift the number of bytes of this new bytecode.
+
+**How to compare bytecodes though?**
+Of course, we cannot compare the pcs because they have changed. We cannot compare the bytes neither because they may have changed too (for a reason I don't know, the same bytecodes in do not have the same bytes in both methods).
+We cannot use the AST equivalence because, by recompiling the reflective method, we have lost the AST of the old method.
+We cannot use the intermediate representation because we have lost the IR of the old method by recompiling the reflective method too.
+What does work is ... **comparing the description of the symbolic bytecodes of both methods** because we still have the symbolic bytecodes of the old method.
+I do not think it is efficient to compare strings but this is the only solution that I could find and that works.
+
+If we suppose that the new method only removed some bytecodes and did not add any to the old method:
+We could still try to detect in the new method all bytecodes prior to the bytecode the program stopped to in the old method, index by index.
+But this time, if we find that the bytecode at the current index for the new method is not identical to the bytecode at the current index for the old method, then it means that the new method has removed some bytecodes, and we can subtract to the shift the number of bytes of the old bytecode.
+If the bytecode the program stopped to in the old method has been removed in the new method, we can compute the shift so that the new pc is the pc of the bytecode that follows the last bytecode that has been executed from the old method.
+
+**However, what if new bytecodes have been added AND old bytecodes have been removed in the new method? (`instead` metalinks do that)**
+I have literally no idea.
+We could still try to detect in the new method all bytecodes prior to the bytecode the program stopped to in the old method, index by index.
+However, if we find that the bytecode at the current index for the new method is not identical to the bytecode at the current index for the old method, then how do we know if it is a bytecode added in the new method or if it is a bytecode removed from the old method?
+
 #### Potential Problems
 
 ##### On Stack Replacement of blocks
@@ -83,9 +109,9 @@ Here we will list the cases that should be tested and for each if this test has 
 5. Test that **`ProcessorScheduler>>#findContextsForMethod:` can return several contexts from different processes: TODO**
 6. Test that **`ProcessorScheduler>>#findContextsForMethod:` can return several contexts from the same process: TODO**
 7. Test that when replacing a context calling the method, **when it is not the top context, by the same method, the sender of the callee becomes the new context: DONE**
-8. Test that **when installing a metalink** on a method after starting to execute it **after the code location the execution stopped to**, **when replacing the compiled method** of the context **that is not the interrupted context** by its reflective version **while creating a new context**, **resuming the execution executes the metalink: TEST YELLOW**
+8. Test that **when installing a metalink** on a method after starting to execute it **after the code location the execution stopped to**, **when replacing the compiled method** of the context **that is not the interrupted context** by its reflective version **while creating a new context**, **resuming the execution executes the metalink: DONE**
 	The test fails because of [the start pc problem](#different-start-pcs-for-compiled-methods-and-their-reflective-versions)
-9. Test that **when installing a metalink** on a method after starting to execute it **after the code location the execution stopped to**, **when replacing the compiled method** of the context **that is not the interrupted context** by its reflective version **without creating a new context**, **resuming the execution executes the metalink: TEST YELLOW** 
+9. Test that **when installing a metalink** on a method after starting to execute it **after the code location the execution stopped to**, **when replacing the compiled method** of the context **that is not the interrupted context** by its reflective version **without creating a new context**, **resuming the execution executes the metalink: DONE** 
     	The test fails because of [the start pc problem](#different-start-pcs-for-compiled-methods-and-their-reflective-versions)
 10. Test that **when installing a metalink** on a method after starting to execute it **after the code location the execution stopped to**, **when replacing the compiled method** of the context **that is the interrupted context** by its reflective version **while creating a new context**, **resuming the execution executes the metalink: TODO**
 11. Test that **when installing a metalink** on a method after starting to execute it **after the code location the execution stopped to**, **when replacing the compiled method** of the context **that is the interrupted context** by its reflective version **without creating a new context**, **resuming the execution executes the metalink: TODO**
