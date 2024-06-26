@@ -1,19 +1,19 @@
 tests
-testExecuteWithWaitingWithLinkInstalledAfterExecutionChangeContextManually
+testExecuteWithWaitingWithAfterLinkInstalledAfterExecutionAtInstructionChangeMethodManually
 
 	| instance messageNode process |
 	instance := ReflectivityExampleOnStack new.
 
-
-
-	process := [ instance exampleMethodWaitingOnSemaphore  ] fork.
+	process := [ instance exampleMethodWaitingOnSemaphore ] fork.
 	0.1 seconds wait.
-	"If we install a link after we execute, we expect it to not matter for this test, as the new code will not be executed"
+
+	"If we install the link before the instruction the program stopped to, it should not be executed"
 	messageNode := (ReflectivityExampleOnStack
 	                >> #exampleMethodWaitingOnSemaphore) ast sendNodes
-		               third.
+		               second.
 	link := MetaLink new
 		        metaObject: self;
+		        control: #after;
 		        selector: #tagExec.
 	messageNode link: link.
 	self assert: messageNode hasMetalink.
@@ -23,9 +23,6 @@ testExecuteWithWaitingWithLinkInstalledAfterExecutionChangeContextManually
 			class
 		equals: ReflectiveMethod.
 	self assert: tag isNil.
-
-
-	"Here we could do the on stack replacement manually"
 
 	self
 		assert:
@@ -37,10 +34,8 @@ testExecuteWithWaitingWithLinkInstalledAfterExecutionChangeContextManually
 	(ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore)
 		compileAndInstallCompiledMethod.
 
-	process suspendedContext sender
-		replaceYourselfWithNewContextForMethod:
-		ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore
-		withCalledContext: process suspendedContext.
+	process suspendedContext sender method:
+		ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore.
 
 	"here check that the method is on the stack"
 
@@ -50,12 +45,8 @@ testExecuteWithWaitingWithLinkInstalledAfterExecutionChangeContextManually
 	"process should be running"
 	self deny: process isTerminated.
 
-	"why do we need to call it twice?"
-
-	process resume.
 	instance continue.
 	0.1 seconds wait.
-
 	self assert: process isTerminated.
 
 

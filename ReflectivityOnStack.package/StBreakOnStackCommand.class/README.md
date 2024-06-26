@@ -1,0 +1,1 @@
+I am a debugger command class that allows to select an instruction in the debugger to dynamically install a breakpoint on the corresponding AST node.

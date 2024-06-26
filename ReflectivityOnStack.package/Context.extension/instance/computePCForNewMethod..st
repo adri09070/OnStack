@@ -14,7 +14,7 @@ computePCForNewMethod: aCompiledMethod
 	newSymbolicBytecodeIndex := 1.
 	newBytecode := newSymbolicBytecodes at: newSymbolicBytecodeIndex.
 	[ "While all bytecodes from current method have not been found in new method:"
-	currentSymbolicBytecodeIndex <= currentSymbolicBytecodes size ]
+	currentSymbolicBytecodeIndex < currentSymbolicBytecodes size "=" ]
 		whileTrue: [ "If the two bytecodes are the same, then no offset need to be added, else it means a bytecode has been added in the new method and the offset should be increased by the size of this bytecode:"
 			currentBytecode := currentSymbolicBytecodes at:
 				                   currentSymbolicBytecodeIndex.

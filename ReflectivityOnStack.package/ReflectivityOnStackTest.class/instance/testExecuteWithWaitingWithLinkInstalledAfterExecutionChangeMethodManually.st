@@ -33,8 +33,6 @@ testExecuteWithWaitingWithLinkInstalledAfterExecutionChangeMethodManually
 	"process should be running"
 	self deny: process isTerminated.
 
-	"why do we need to call it twice?"
-	instance continue.
 	instance continue.
 	0.1 seconds wait.
 	self assert: process isTerminated.

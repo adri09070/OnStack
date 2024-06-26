@@ -1,21 +1,22 @@
 tests
-testExecuteWithWaitingWithLinkInstalledAfterExecutionChangeContextManually
+testExecuteWithWaitingWithTwoLinksInstalledAfterExecutionChangeMethodManually
 
-	| instance messageNode process |
+	| instance messageNode variableNode process |
 	instance := ReflectivityExampleOnStack new.
 
-
-
-	process := [ instance exampleMethodWaitingOnSemaphore  ] fork.
+	process := [ instance exampleMethodWaitingOnSemaphore ] fork.
 	0.1 seconds wait.
 	"If we install a link after we execute, we expect it to not matter for this test, as the new code will not be executed"
 	messageNode := (ReflectivityExampleOnStack
 	                >> #exampleMethodWaitingOnSemaphore) ast sendNodes
 		               third.
+
 	link := MetaLink new
 		        metaObject: self;
 		        selector: #tagExec.
+
 	messageNode link: link.
+
 	self assert: messageNode hasMetalink.
 	self
 		assert:
@@ -23,24 +24,38 @@ testExecuteWithWaitingWithLinkInstalledAfterExecutionChangeContextManually
 			class
 		equals: ReflectiveMethod.
 	self assert: tag isNil.
-
-
-	"Here we could do the on stack replacement manually"
-
-	self
-		assert:
-		(ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore)
-			class
-		equals: ReflectiveMethod.
+	self assert: tag2 isNil.
 
 	"make sure to create the compiledMethod"
 	(ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore)
 		compileAndInstallCompiledMethod.
 
-	process suspendedContext sender
-		replaceYourselfWithNewContextForMethod:
-		ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore
-		withCalledContext: process suspendedContext.
+	process suspendedContext sender method:
+		ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore.
+		
+	"we install second link"
+	variableNode := messageNode receiver.
+	link2 := MetaLink new
+		         metaObject: self;
+		         selector: #tag2Exec.
+	variableNode link: link2.
+
+	self assert: messageNode hasMetalink.
+	self assert: variableNode hasMetalink.
+	self
+		assert:
+		(ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore)
+			class
+		equals: ReflectiveMethod.
+	self assert: tag isNil.
+	self assert: tag2 isNil.
+	
+	"make sure to create the compiledMethod"
+	(ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore)
+		compileAndInstallCompiledMethod.
+
+	process suspendedContext sender method:
+		ReflectivityExampleOnStack >> #exampleMethodWaitingOnSemaphore.
 
 	"here check that the method is on the stack"
 
@@ -50,14 +65,11 @@ testExecuteWithWaitingWithLinkInstalledAfterExecutionChangeContextManually
 	"process should be running"
 	self deny: process isTerminated.
 
-	"why do we need to call it twice?"
-
-	process resume.
 	instance continue.
 	0.1 seconds wait.
-
 	self assert: process isTerminated.
 
 
-	"It got executed!!"
-	self assert: tag notNil
+	"Both metalinks got executed!!"
+	self assert: tag notNil.
+	self assert: tag2 notNil
