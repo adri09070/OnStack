@@ -19,7 +19,11 @@ computePCForNewMethod: aCompiledMethod
 			currentBytecode := currentSymbolicBytecodes at:
 				                   currentSymbolicBytecodeIndex.
 			newBytecode := newSymbolicBytecodes at: newSymbolicBytecodeIndex.
-			currentBytecode description = newBytecode description
+			(self
+				 currentBytecode: currentBytecode
+				 equalsToNewBytecode: newBytecode
+				 withCurrents: self compiledCode symbolicBytecodes
+				 withNews: aCompiledMethod symbolicBytecodes)
 				ifTrue: [
 				currentSymbolicBytecodeIndex := currentSymbolicBytecodeIndex + 1 ]
 				ifFalse: [ offset := offset + newBytecode bytes size ].
