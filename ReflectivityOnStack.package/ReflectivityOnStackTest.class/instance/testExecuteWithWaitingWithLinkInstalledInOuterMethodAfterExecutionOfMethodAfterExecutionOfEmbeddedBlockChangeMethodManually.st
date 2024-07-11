@@ -3,12 +3,6 @@ testExecuteWithWaitingWithLinkInstalledInOuterMethodAfterExecutionOfMethodAfterE
 
 	| instance messageNode process |
 	instance := ReflectivityExampleOnStack new.
-	ReflectivityExampleOnStack
-	>> #exampleMethodWaitingOnSemaphoreInEmbeddedBlock
-		propertyAt: #bcToASTCache
-		put: (ReflectivityExampleOnStack
-			 >> #exampleMethodWaitingOnSemaphoreInEmbeddedBlock) ast bcToASTCache .
-	1 halt.
 
 	process := [ instance exampleMethodWaitingOnSemaphoreInEmbeddedBlock ]
 		           fork.
@@ -16,7 +10,7 @@ testExecuteWithWaitingWithLinkInstalledInOuterMethodAfterExecutionOfMethodAfterE
 	"If we install a link after we execute, we expect it to not matter for this test, as the new code will not be executed"
 	messageNode := (ReflectivityExampleOnStack
 	                >> #exampleMethodWaitingOnSemaphoreInEmbeddedBlock)
-		               ast sendNodes last.
+		               ast sendNodes last parent.
 	link := MetaLink new
 		        metaObject: self;
 		        selector: #tagExec.
@@ -32,13 +26,12 @@ testExecuteWithWaitingWithLinkInstalledInOuterMethodAfterExecutionOfMethodAfterE
 
 
 	"make sure to create the compiledMethod"
-	1 halt.
 	(ReflectivityExampleOnStack
 	 >> #exampleMethodWaitingOnSemaphoreInEmbeddedBlock)
 		compileAndInstallCompiledMethod.
 
-	(process findContextsForMethod: process suspendedContext method) do: [
-		:ctx |
+	(process findContextsForMethod:
+		 process suspendedContext method method) do: [ :ctx |
 		ctx method: ReflectivityExampleOnStack
 			>> #exampleMethodWaitingOnSemaphoreInEmbeddedBlock ].
 

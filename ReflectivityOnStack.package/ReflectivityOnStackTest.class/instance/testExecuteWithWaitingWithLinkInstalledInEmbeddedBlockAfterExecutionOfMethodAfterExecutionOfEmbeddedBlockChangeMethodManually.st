@@ -28,7 +28,6 @@ testExecuteWithWaitingWithLinkInstalledInEmbeddedBlockAfterExecutionOfMethodAfte
 	 >> #exampleMethodWaitingOnSemaphoreInEmbeddedBlock)
 		compileAndInstallCompiledMethod.
 
-	1 halt.
 	process suspendedContext method: ReflectivityExampleOnStack
 		>> #exampleMethodWaitingOnSemaphoreInEmbeddedBlock.
 
