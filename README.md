@@ -169,3 +169,9 @@ Here we will list the cases that should be tested and for each if this test has 
     	[See potential problem here](#on-stack-replacement-of-blocks)
 38. Test: **when installing a metalink in an inlined block** **after starting to execute it** **after the code location the execution stopped to**, **when replacing the compiled method in each corresponding block and method context** by its reflective version, **resuming the execution execute the metalink: DONE**
     	[See potential problem here](#on-stack-replacement-of-inlined-blocks)
+39. Test: **when installing a metalink in a block** **before starting to execute it** **after its creation**, **when replacing the compiled method in each corresponding block and method context** by its reflective version, **resuming the execution execute the metalink: DONE**
+	[See potential problem here](#on-stack-replacement-of-blocks)
+40. Test: **when installing a metalink in a block** **before starting to execute it** **before its creation**, **when replacing the compiled method in each corresponding block and method context** by its reflective version, **resuming the execution execute the metalink: DONE**
+	[See potential problem here](#on-stack-replacement-of-blocks)
+41. Test: **when installing a metalink in an embedded block** **before starting to execute it** **after its creation**, **when replacing the compiled method in each corresponding block and method context** by its reflective version, **resuming the execution execute the metalink: DONE**
+	[See potential problem here](#on-stack-replacement-of-blocks)
