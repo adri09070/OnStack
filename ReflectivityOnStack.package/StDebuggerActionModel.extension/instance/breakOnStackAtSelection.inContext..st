@@ -2,8 +2,8 @@
 breakOnStackAtSelection: anInterval inContext: aContext
 
 	| currentMethod astNode allContextsForCurrentMethod newMethod |
-	currentMethod := aContext compiledCode.
-	astNode := aContext compiledCode ast bestNodeFor: anInterval.
+	currentMethod := aContext homeMethod.
+	astNode := currentMethod ast bestNodeFor: anInterval.
 	DebugPointManager installNew: BreakDebugPoint on: astNode.
 	newMethod := aContext methodClass >> aContext selector.
 	self assert: currentMethod ~= newMethod.

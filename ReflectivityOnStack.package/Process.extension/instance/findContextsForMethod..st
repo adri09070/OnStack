@@ -6,7 +6,7 @@ findContextsForMethod: aMethod
 	context := suspendedContext.
 	priorContext := nil.
 	[ context isNil ] whileFalse: [
-		context method = aMethod
+		context homeMethod = aMethod
 			ifTrue: [found add: context ].
 		priorContext := context.
 		context := context sender ].
