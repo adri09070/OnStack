@@ -6,7 +6,7 @@ method: aCompiledMethod
 		                ifTrue: [ aCompiledMethod ]
 		                ifFalse: [
 			                aCompiledMethod allBlocks detect: [ :compiledBlock |
-				                compiledBlock ast == method ast ] ].
+				                compiledBlock ast = method ast ] ].
 
 	1 to: self stackPtr do: [ :index |
 		| obj |
@@ -14,7 +14,7 @@ method: aCompiledMethod
 		obj isClosure ifTrue: [
 			obj compiledBlock:
 				(aCompiledMethod allBlocks detect: [ :compiledBlock |
-					 compiledBlock ast == obj compiledBlock ast ]) ] ].
+					 compiledBlock ast = obj compiledBlock ast ]) ] ].
 
 	pc := self computePCForNewMethod: compiledCode.
 	method := compiledCode.
