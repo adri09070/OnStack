@@ -23,17 +23,15 @@ testExecuteWithWaitingWithLinkInstalledInOuterMethodAfterExecutionOfMethodAfterE
 		equals: ReflectiveMethod.
 	self assert: tag isNil.
 
-
-
 	"make sure to create the compiledMethod"
 	(ReflectivityExampleOnStack
 	 >> #exampleMethodWaitingOnSemaphoreInEmbeddedBlock)
 		compileAndInstallCompiledMethod.
 
-	(process findContextsForMethod:
-		 process suspendedContext method method) do: [ :ctx |
-		ctx method: ReflectivityExampleOnStack
-			>> #exampleMethodWaitingOnSemaphoreInEmbeddedBlock ].
+	(process findContextsForMethod: process suspendedContext homeMethod)
+		do: [ :ctx |
+			ctx method: ReflectivityExampleOnStack
+				>> #exampleMethodWaitingOnSemaphoreInEmbeddedBlock ].
 
 	"here check that the method is on the stack"
 
