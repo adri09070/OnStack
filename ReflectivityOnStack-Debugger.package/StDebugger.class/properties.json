@@ -1,0 +1,32 @@
+{
+	"classtraitcomposition" : "TDebugger classTrait",
+	"classvars" : [
+		"EnableStackColoring",
+		"FastTDD"
+	],
+	"instvars" : [
+		"code",
+		"toolbar",
+		"stackTable",
+		"inspector",
+		"breakpointInspector",
+		"stackHeader",
+		"extensionTools",
+		"extensionToolsNotebook",
+		"toolbarCommandGroup",
+		"debuggerActionModel",
+		"unsavedCodeChanges",
+		"programmaticallyClosed",
+		"stackAndCodeContainer"
+	],
+	"name" : "StDebugger",
+	"commentStamp" : "",
+	"super" : "StPresenter",
+	"traitcomposition" : "TDebugger",
+	"type" : "normal",
+	"classinstvars" : [
+		"layoutConfigurator"
+	],
+	"pools" : [ ],
+	"category" : "NewTools-Debugger"
+}

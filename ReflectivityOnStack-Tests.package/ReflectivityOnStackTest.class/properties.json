@@ -1,0 +1,16 @@
+{
+	"commentStamp" : "",
+	"super" : "TestCase",
+	"category" : "ReflectivityOnStack-Tests",
+	"classinstvars" : [ ],
+	"pools" : [ ],
+	"classvars" : [ ],
+	"instvars" : [
+		"tag",
+		"link",
+		"link2",
+		"tag2"
+	],
+	"name" : "ReflectivityOnStackTest",
+	"type" : "normal"
+}
